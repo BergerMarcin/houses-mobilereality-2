@@ -2,7 +2,7 @@
   <!--      <div class="tile items-center background-layer"-->
   <!--           style="background: url('https://i.picsum.photos/id/401/800/800.jpg?hmac=AaEwn38HPzxdKKMhHiPhfq4bDGqRzarfJ23JIrAkif0')fixed no-repeat; background-size: auto 50%;">-->
   <div class="tile items-center" :style="tileSize">
-    <div id="background" :style="tileSize">
+    <div v-if="url" id="background" :style="tileSize">
       <img :src="url" class="stretch" alt=""/>
     </div>
     <div class="tile-content">
