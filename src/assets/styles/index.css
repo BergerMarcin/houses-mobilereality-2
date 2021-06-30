@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+Based on:
+https://tailwindcss.com/docs/functions-and-directives#layer
+https://tailwindcss.com/docs/functions-and-directives#theme
+https://tailwindcss.com/docs/functions-and-directives#apply
+*/
+@layer base {
+    body {
+        background-color: theme('colors.tableHead');
+        font-family: theme('fontFamily.default'), serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: theme('colors.secondary');
+        font-weight: normal;
+    }
+}
