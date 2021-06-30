@@ -1,10 +1,11 @@
 <template>
-  <!--      <div class="tile items-center background-layer"-->
-  <!--           style="background: url('https://i.picsum.photos/id/401/800/800.jpg?hmac=AaEwn38HPzxdKKMhHiPhfq4bDGqRzarfJ23JIrAkif0')fixed no-repeat; background-size: auto 50%;">-->
-  <div class="tile items-center" :style="tileSize">
-    <div v-if="url" id="background" :style="tileSize">
-      <img :src="url" class="stretch" alt=""/>
-    </div>
+  <div class="tile items-center"
+       :style="`${tileSize} background: url(${url}) fixed no-repeat; z-index: -1;`">
+<!--       :style="(url && `background: url(${url}) fixed no-repeat; background-size: auto 50%`)">-->
+    <!--  <div class="tile items-center" :style="tileSize">-->
+    <!--    <div v-if="url" id="background" :style="tileSize">-->
+    <!--      <img :src="url" class="stretch" alt=""/>-->
+    <!--    </div>-->
     <div class="tile-content">
       <div class="h-1_5"/>
       <h1 class="text-center uppercase mb-0">{{ header }}</h1>
@@ -19,18 +20,21 @@ export default {
   name: "Tile",
   props: {
     url: String,
-    childDepth: {
-      type: Number,
-      require
-    },
+    childDepth: Number,
     header: String,
     subHeader: String,
     content: String,
   },
   computed: {
-    tileSize () {
-      const size = 100/(this.childDepth + 1);
-      return `width: min(${size}vw, ${size}vh); height: min(${size}vw, ${size}vh);`
+    tileSize() {
+      const MAX_WIDTH_HEIGHT_IN_PERCENTAGE = 100;
+      const BASIC_PADDING_IN_REM = 1;
+      const size = MAX_WIDTH_HEIGHT_IN_PERCENTAGE / Math.pow(2, this.childDepth);
+      const padding = BASIC_PADDING_IN_REM / this.childDepth;
+      const maxWidth = `calc(${size}vw - ${padding}rem)`;
+      const maxHeigth = `calc(${size}vh - ${padding}rem)`;
+      return `width: min(${maxWidth}, ${maxHeigth}); height: min(${maxWidth}, ${maxHeigth});`
+      // return `min-width: min(${maxWidth}, ${maxHeigth}); max-width: min(${maxWidth}, ${maxHeigth}); min-height: min(${maxWidth}, ${maxHeigth}); max-height: min(${maxWidth}, ${maxHeigth});`
     }
   }
 }
@@ -43,13 +47,14 @@ export default {
 }
 
 .tile {
-  padding: 0.5rem;
   border-style: solid;
   border-width: 2px;
   overflow: auto;
 }
 
 .tile-content {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   margin-block-start: 0;
   margin-block-end: 0;
   margin-inline: 0;
