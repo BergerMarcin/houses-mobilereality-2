@@ -1,40 +1,89 @@
 <template>
-  <div class="tile items-center"
-       :style="`${tileSize} background: url(${url}) fixed no-repeat; z-index: -1;`">
-<!--       :style="(url && `background: url(${url}) fixed no-repeat; background-size: auto 50%`)">-->
-    <!--  <div class="tile items-center" :style="tileSize">-->
-    <!--    <div v-if="url" id="background" :style="tileSize">-->
-    <!--      <img :src="url" class="stretch" alt=""/>-->
-    <!--    </div>-->
-    <div class="tile-content">
-      <div class="h-1_5"/>
-      <h1 class="text-center uppercase mb-0">{{ header }}</h1>
-      <h4 class="text-center uppercase mb-8">{{ subHeader }}Czym jesteśmy i dokąd Zmierzamy</h4>
-      <p class="text-center">{{ content }}</p>
+  <div :id="`tile-${tileId}`" :style="`${tileSize}`">
+    <div class="tile" :style="content.urlBackground && `background: url(${content.urlBackground}) no-repeat; background-size: 100%;`">
+    <div :id="`tile-${tileId}-content`" class="tile-content" :style="tileContentOverflowed && `justify-content: start;`">
+      <h1 v-if="content.header" class="text-center uppercase mt-2">{{ content.header }}</h1>
+      <h4 v-if="content.subHeader" class="text-theme-primary text-center uppercase mb-8">{{ content.subHeader }}</h4>
+      <h3 v-for="(line, index) in content.headerDescriptions" :key="`hD-${index}`" class="text-center mb-4">{{ line }}</h3>
+      <h5 v-for="(line, index) in content.highlightedTexts" :key="`hT-${index}`" class="text-center mb-4">{{ line }}</h5>
+      <p v-for="(line, index) in content.regularTexts" :key="`rT-${index}`" class="text-center mb-2">{{ line }}</p>
+      <div v-if="content.btn" @click="clickHandler" class="btn">{{ content.btn }}</div>
     </div>
+  </div>
   </div>
 </template>
 
 <script>
+/**
+ * content = {
+ *   urlBackground: String,
+ *   header: String,
+ *   subHeader: String,
+ *   headerDescriptions: Array[String],
+ *   highlightedTexts: Array[String],
+ *   regularTexts: Array[String],
+ *   btn: String
+ * }
+ **/
 export default {
   name: "Tile",
   props: {
-    url: String,
+    tileId: String,
     childDepth: Number,
-    header: String,
-    subHeader: String,
-    content: String,
+    content: Object
   },
-  computed: {
-    tileSize() {
-      const MAX_WIDTH_HEIGHT_IN_PERCENTAGE = 100;
-      const BASIC_PADDING_IN_REM = 1;
-      const size = MAX_WIDTH_HEIGHT_IN_PERCENTAGE / Math.pow(2, this.childDepth);
-      const padding = BASIC_PADDING_IN_REM / this.childDepth;
-      const maxWidth = `calc(${size}vw - ${padding}rem)`;
-      const maxHeigth = `calc(${size}vh - ${padding}rem)`;
-      return `width: min(${maxWidth}, ${maxHeigth}); height: min(${maxWidth}, ${maxHeigth});`
-      // return `min-width: min(${maxWidth}, ${maxHeigth}); max-width: min(${maxWidth}, ${maxHeigth}); min-height: min(${maxWidth}, ${maxHeigth}); max-height: min(${maxWidth}, ${maxHeigth});`
+  data ()  {
+    return {
+      tileSize: String,
+      tileContentOverflowed: false
+    }
+  },
+  mounted () {
+    window.addEventListener('resize', () => {
+      this.setTileContentOverflowed();
+      this.setTileSize();
+    });
+    this.setTileSize();
+    this.setTileContentOverflowed();
+  },
+  methods: {
+    clickHandler() {
+      console.log(`CLICKED: `, this.content.btn);
+    },
+    setTileSize() {
+      const BASIC_PADDING_IN_PX = 16;
+      const vw = window.innerWidth;   // in pixels
+      const vh = window.innerHeight;  // in pixels
+      const maxWidth = Math.round(0.5 * vw - BASIC_PADDING_IN_PX)     // `calc(${percentSize}vw - ${padding}rem)`;
+      const maxHeight = Math.round(0.5 * vh - BASIC_PADDING_IN_PX)    // `calc(${percentSize}vh - ${padding}rem)`;
+      let size = Math.min(maxWidth, maxHeight);
+      size -= size % 2
+      if (this.childDepth === 2) size = size / 2
+      this.tileSize = `width: ${size}px; height: ${size}px;`   // `width: min(${maxWidth}, ${maxHeigth}); height: min(${maxWidth}, ${maxHeigth});`;
+    },
+    /**
+     * Determine if the tile content (an HTML element's content) overflows
+     * (based on https://stackoverflow.com/questions/143815/determine-if-an-html-elements-content-overflows)
+     *
+     * Applied in case turning axis with `flex-direction: column;` and `justify-content: center;` of scrollable element
+     * The issue is caused by overflow which is taken wrong width/height or top of the scrollable element (overflow is taken
+     * width instead height )
+     * Based on that function flag/Boolean it is set element `justify-content: start-end;` (instead of
+     * `justify-content: center;`)
+     **/
+    setTileContentOverflowed () {
+      this.tileContentOverflowed = false;
+      let el = document.getElementById(`tile-${this.tileId}`)
+      let elContent = document.getElementById(`tile-${this.tileId}-content`)
+      if (el && elContent) {
+        let curOverflow = elContent.style.overflow;
+        if (!curOverflow || curOverflow === "visible") elContent.style.overflow = "hidden";
+        let isOverflowing = el.clientWidth < elContent.scrollWidth - 2 || el.clientHeight < elContent.scrollHeight - 2;
+        // console.warn(elContent.clientWidth, elContent.clientHeight, elContent.scrollWidth, elContent.scrollHeight, isOverflowing)
+        // console.warn(el.clientWidth, el.clientHeight)
+        elContent.style.overflow = curOverflow;
+        this.tileContentOverflowed = isOverflowing;
+      }
     }
   }
 }
@@ -42,35 +91,64 @@ export default {
 
 
 <style scoped>
-.items-center {
-  align-items: center;
-}
-
 .tile {
-  border-style: solid;
-  border-width: 2px;
-  overflow: auto;
+  display: flex;
+  //border-style: solid;
+  //border-width: 2px;
+  width: 100%;
+  height: 100%;
 }
 
 .tile-content {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  overflow: auto;
+  font-family: sans-serif;
+  letter-spacing: -0.1em;
+  width: 100%;
+  height: 100%;
+}
+
+h1, h3, h4, h5, p {
   margin-block-start: 0;
   margin-block-end: 0;
   margin-inline: 0;
-  position: relative;
-  z-index: -1
 }
 
-.h-1_5 {
-  height: 150px;
-  max-height: 5vh;
+p {
+  letter-spacing: -0.05em;
+  color: #A9B1BD;
 }
 
-h1, h4, p {
-  margin-block-start: 0;
-  margin-block-end: 0;
-  margin-inline: 0;
+.btn {
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #11B0F8;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  border-color: #11B0F8;
+}
+
+.btn:hover {
+  border-width: 4px;
+  margin-top: calc(3rem - 4px);
+}
+
+.btn:active {
+  border-width: 1px;
+  margin-top: calc(3rem + 2px);
 }
 
 .uppercase {
@@ -81,24 +159,23 @@ h1, h4, p {
   text-align: center;
 }
 
-.mb-0 {
-  margin-bottom: 0;
+.text-theme-primary {
+  color: #11B0F8;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
 }
 
 .mb-8 {
   margin-bottom: 2rem;
 }
 
-#background {
-  pointer-events: none;
-  position: relative;
-  left: -0.5rem;
-  top: -0.5rem;
-  z-index: -1;
-}
-
-.stretch {
-  width: 100%;
-  height: 100%;
+.mt-2 {
+  margin-top: 1rem;
 }
 </style>
