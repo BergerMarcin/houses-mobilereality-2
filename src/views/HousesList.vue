@@ -59,8 +59,7 @@ export default {
         {name: 'Piętro', width: 5, type: 'integer', houseProp: 'floorsNumber'},
         {name: 'Opis', width: 30, type: 'text', houseProp: 'description'},
         {name: 'Data', width: 10, type: 'date', houseProp: 'createdAt'},
-        {name: 'Etykieta', width: 10, type: 'text', houseProp: 'label'},
-        // {name: 'Zdjęcia', width: 32, height: 18, type: 'img', houseProp: 'imgs'},
+        {name: 'Etykieta', width: 10, type: 'text', houseProp: 'label'}
       ]
     }
   },
@@ -75,13 +74,11 @@ export default {
       if (field.type === 'no.') return (index + 1) + '.'
       if (field.type === 'text' || field.type === 'integer') return house[field.houseProp]
       if (field.type === 'date') return moment(house[field.houseProp]).local().format('YYYY.MM.DD hh:mm')
-      if (field.type === 'img') return `<img alt="House picture" src="${this.house[field.houseProp][0]}"/>`
       return ''
     },
     houseAdd() {
       console.warn('House ADD');
-      // TODO: install & check router before start running
-      // this.$router.push('HouseAdd');
+      this.$router.push({name: 'HouseAdd'});
     },
     houseDetails(id) {
       console.warn('House DETAILS, id: ', id);

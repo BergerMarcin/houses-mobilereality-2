@@ -39,9 +39,8 @@ export default {
         {name: 'Adres', type: 'text', houseProp: 'address'},
         {name: 'Piętro', type: 'integer', houseProp: 'floorsNumber'},
         {name: 'Opis', type: 'text', houseProp: 'description'},
-        {name: 'Data', width: 10, type: 'date', houseProp: 'createdAt'},
-        {name: 'Etykieta', type: 'text', houseProp: 'label'},
-        // {name: 'Zdjęcia', type: 'img', houseProp: 'imgs'},
+        {name: 'Data', type: 'date', houseProp: 'createdAt'},
+        {name: 'Etykieta', type: 'text', houseProp: 'label'}
       ]
     }
   },
@@ -57,10 +56,6 @@ export default {
     cellContent(field) {
       if (field.type === 'text' || field.type === 'integer') return this.house[field.houseProp]
       if (field.type === 'date') return moment(this.house[field.houseProp]).local().format('YYYY.MM.DD hh:mm')
-      // if (field.type === 'img') {
-      //   return this.house[field.houseProp]
-      //       .reduce((html, img) => `<img alt="House picture" src="${img}"/>`, '')
-      // }
       return '-'
     },
     housesList() {

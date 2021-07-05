@@ -25,10 +25,11 @@ api.simple = async function (method, resource, data = {}, callback = () => true)
     this({url: resource, method, data})
       .then(({data}) => {
         response = data;
-        console.log(response);
+        console.warn(response);
       })
       .catch((err) => {
         error = err;
+        console.warn(response);
       })
       .finally(async () => {
         await callback(error, response);

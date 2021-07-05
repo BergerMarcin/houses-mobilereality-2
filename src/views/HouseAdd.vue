@@ -1,15 +1,18 @@
 <template>
-  <div class="flex flex-col w-80 my-2">
-    <div class="header">Nowy dom</div>
+  <div class="flex justify-center">
+    <div class="flex flex-col w-80 my-2">
+      <div class="header">Nowy dom</div>
 
-    <div class="flex-col w-100 my-2">
-      <div v-for="(field, ind) in houseFields" :key="`house-field-${ind}`">
-        <label class="field-header">{{field.name}}
-          <input class="field-content" :type="field.type" :name="house[field.houseProp]" :placeholder="field.placeholder">
-        </label>
-        <div class="flex w-100 my-2">
-          <div class="btn" :style="`disabled: ${!validatedData}`" @click="houseAdd()">Dodaj</div>
-          <div class="btn" @click="housesList()">Cofnij (lista domów)</div>
+      <div class="flex-col w-100 my-2">
+        <div v-for="(field, ind) in houseFields" :key="`house-field-${ind}`">
+          <label class="field-header">{{ field.name }}
+            <input class="field-content" :type="field.type" v-model="house[field.houseProp]"
+                   :placeholder="field.placeholder">
+          </label>
+        </div>
+        <div class="flex justify-center w-100 my-2">
+          <div class="btn m-1" :style="`disabled: ${!validatedData}`" @click="houseAdd()">Dodaj</div>
+          <div class="btn m-1" @click="housesList()">Cofnij (lista domów)</div>
         </div>
       </div>
     </div>
@@ -28,8 +31,7 @@ export default {
         address: '',
         floorsNumber: null,
         description: '',
-        label: '',
-        imgs: []
+        label: ''
       }
     }
   },
@@ -37,28 +39,32 @@ export default {
     // NOTE: rows does not include action column (it is set directly @ template)
     houseFields() {
       return [
-        {name: 'Nazwa', type: 'text', houseProp: 'name', placeholder: 'Podaj nazwę domu (minimum 3 znaki)'},
         {name: 'Adres', type: 'text', houseProp: 'address', placeholder: 'Podaj adres domu (minimum 5 znaków)'},
-        {name: 'Zdjęcia', type: 'img', houseProp: 'img'},
+        {name: 'Piętro', type: 'number', houseProp: 'floorsNumber', placeholder: 'Podaj piętro domu (cyfrę)'},
+        {name: 'Opis', type: 'textarea', houseProp: 'description', placeholder: 'Podaj opis domu (minimum 10 znaków)'},
+        {name: 'Etykieta', type: 'text', houseProp: 'label', placeholder: 'Podaj etykietę domu (minimum 1 znak)'}
       ]
     },
     validatedData() {
-      return this.house.name.length > 3 && this.house.name.length > 5;
+      console.log(typeof this.house.floorsNumber)
+      try {parseInt(this.house.floorsNumber)} catch {return false}
+      return this.house.address.length > 5 && this.house.description.length > 10 && this.house.label.length > 1;
     }
   },
   methods: {
-    houseAdd() {
-      console.warn('House ADD');
+    async houseAdd() {
       if (this.validatedData) {
-        console.log('House ADDING on the way');
-        // this.$store.dispatch({name: 'addHouse'});
-      }
-      this.housesList();
+        const payload = {...this.house, floorsNumber: parseInt(this.house.floorsNumber)}
+        console.warn('House ADDING payload: ', payload);
+        // await this.$store.dispatch('addHouse', payload);
+        this.$toasted.success(`Dodano nowy dom o adresie ${this.$store.getters.addedHouse}`)
+        console.warn('House ADDED');
+        this.housesList();
+      } else this.$toasted.error('Błędne dane')
     },
     housesList() {
       console.warn('Houses LIST');
-      // TODO: install & check router before start running
-      // this.$router.push({name: 'HousesList'});
+      this.$router.push({name: 'HousesList'});
     }
   }
 }
@@ -102,6 +108,10 @@ export default {
   flex-direction: column;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
 .w-80 {
   width: 80%;
 }
@@ -117,7 +127,7 @@ export default {
   color: #11B0F8;
   text-align: center;
   text-transform: uppercase;
-  padding: 0.5rem 2rem 0.5rem 2rem;
+  padding: 0.5rem;
   border-style: solid;
   border-width: 2px;
   border-radius: 5px;
@@ -126,14 +136,16 @@ export default {
 
 .btn:hover {
   border-width: 4px;
-  padding-top: calc(0.5rem - 2px);
-  padding-bottom: calc(0.5rem - 2px);
+  padding: calc(0.5rem - 2px);
 }
 
 .btn:active {
   border-width: 1px;
-  padding-top: calc(0.5rem + 1px);
-  padding-bottom: calc(0.5rem + 1px);
+  padding: calc(0.5rem + 1px);
+}
+
+.m-1 {
+  margin: 0.25rem;
 }
 
 </style>
