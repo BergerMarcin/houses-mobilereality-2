@@ -38,8 +38,8 @@ Based on: https://stackoverflow.com/questions/143815/determine-if-an-html-elemen
 2. Logical part (views with API):
    - a. List of houses view (2. view): 3 + 3h 
    - b. Single house details view (3. view): 1 + 1h
-   - c. Delete house functionality (to the 2. & 3. view): 1h
-   - d. Add house view (4. view): 1h
+   - c. Delete house functionality (to the 2. & 3. view): 1 + 1h
+   - d. Add house view (4. view): 1 + 2 h
 
 TOTAL: <br/> 
 Regular time: 3h
