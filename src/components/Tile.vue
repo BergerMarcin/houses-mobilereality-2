@@ -7,7 +7,7 @@
       <h3 v-for="(line, index) in content.headerDescriptions" :key="`hD-${index}`" class="text-center mb-4">{{ line }}</h3>
       <h5 v-for="(line, index) in content.highlightedTexts" :key="`hT-${index}`" class="text-center mb-4">{{ line }}</h5>
       <p v-for="(line, index) in content.regularTexts" :key="`rT-${index}`" class="text-center mb-2">{{ line }}</p>
-      <div v-if="content.btn" @click="clickHandler" class="btn">{{ content.btn }}</div>
+      <div v-if="content.btn" @click="clickHandler" class="btn">{{ content.btn.text }}</div>
     </div>
   </div>
   </div>
@@ -49,6 +49,7 @@ export default {
   methods: {
     clickHandler() {
       console.log(`CLICKED: `, this.content.btn);
+      this.$router.push({name: this.content.btn.routeName});
     },
     setTileSize() {
       const BASIC_PADDING_IN_PX = 16;

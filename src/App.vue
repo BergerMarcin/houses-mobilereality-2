@@ -1,20 +1,32 @@
 <template>
   <div id="app">
-    <StartPage/>
+<!--    <div id="nav">-->
+<!--      <router-link to="/">Home</router-link> |-->
+<!--      <router-link to="/about">About</router-link>-->
+<!--    </div>-->
+    <router-view/>
   </div>
 </template>
 
-<script>
-import StartPage from './components/StartPage.vue'
-
-export default {
-  name: 'App',
-  components: { StartPage }
-}
-</script>
-
 <style lang="scss">
 #app {
-  // responsibility moved to TailwindCSS with `./tailwind.config.js` and `./assets/styles/index.css`
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+#nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 </style>

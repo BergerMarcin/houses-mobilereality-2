@@ -23,11 +23,14 @@ add house (4. subpage)
 <br/><hr>
 
 # API
-## Endpoints URL
-http://mobile-reality-backend.sadek.usermd.net/houses/all
-
 ## Swagger
-http://mobile-reality-backend.sadek.usermd.net/swagger/#/Recruitment%20tests/get_houses__id_
+http://mobile-reality-backend.sadek.usermd.net/swagger/#/
+
+## Endpoints URL
+ - get all houses (get): http://mobile-reality-backend.sadek.usermd.net/houses/all
+ - get single house (get): http://mobile-reality-backend.sadek.usermd.net/houses/{id}
+ - create (post): http://mobile-reality-backend.sadek.usermd.net/houses
+ - delete single house (delete): http://mobile-reality-backend.sadek.usermd.net/houses/{id}
 
 <br/><hr/>
 

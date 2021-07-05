@@ -11,11 +11,16 @@ https://tailwindcss.com/docs/functions-and-directives#apply
 @layer base {
     body {
         background-color: theme('colors.tableHead');
-        font-family: theme('fontFamily.default'), serif;
+        font-family: theme('fontFamily.default'), sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: theme('colors.secondary');
         font-weight: normal;
+    }
+
+    .toasted {
+        font-family: theme('fontFamily.default'), sans-serif;
+        letter-spacing: -0.1em;
     }
 }

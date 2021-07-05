@@ -36,10 +36,10 @@ Based on: https://stackoverflow.com/questions/143815/determine-if-an-html-elemen
 # Tasks time
 1. Styling part - start view (1. view): 3 (regular time) + 1 + 0.75 + 1 + 2 + 6 = 13.75 (included 2h on debugging rendering in Chrome)
 2. Logical part (views with API):
-   - a. List of houses view (2. view):
-   - b. Single house details view (3. view):
-   - c. Delete house functionality (to the 2. & 3. view):
-   - d. Add house view (4. view):
+   - a. List of houses view (2. view): 3 + 3h 
+   - b. Single house details view (3. view): 1 + 1h
+   - c. Delete house functionality (to the 2. & 3. view): 1h
+   - d. Add house view (4. view): 1h
 
 TOTAL: <br/> 
 Regular time: 3h
