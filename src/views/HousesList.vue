@@ -56,7 +56,8 @@ export default {
       return [
         {name: 'Lp.', width: 5, type: 'no.'},
         {name: 'Adres', width: 20, type: 'text', houseProp: 'address'},
-        {name: 'Opis', width: 40, type: 'text', houseProp: 'description'},
+        {name: 'Piętro', width: 5, type: 'integer', houseProp: 'floorsNumber'},
+        {name: 'Opis', width: 30, type: 'text', houseProp: 'description'},
         {name: 'Data', width: 10, type: 'date', houseProp: 'createdAt'},
         {name: 'Etykieta', width: 10, type: 'text', houseProp: 'label'},
         // {name: 'Zdjęcia', width: 32, height: 18, type: 'img', houseProp: 'imgs'},
@@ -72,7 +73,7 @@ export default {
   methods: {
     cellContent(house, index, field) {
       if (field.type === 'no.') return (index + 1) + '.'
-      if (field.type === 'text') return house[field.houseProp]
+      if (field.type === 'text' || field.type === 'integer') return house[field.houseProp]
       if (field.type === 'date') return moment(house[field.houseProp]).local().format('YYYY.MM.DD hh:mm')
       if (field.type === 'img') return `<img alt="House picture" src="${this.house[field.houseProp][0]}"/>`
       return ''
@@ -153,11 +154,12 @@ export default {
 }
 
 .active-cel:hover {
-  border-color: #11B0F8;
+  font-weight: 800;
+  color: #11B0F8;
 }
 
 .active-cel:active {
-  font-weight: 800;
+  font-weight: 400;
 }
 
 .btn {
@@ -167,7 +169,7 @@ export default {
   color: #11B0F8;
   text-align: center;
   text-transform: uppercase;
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  padding: 0.5rem;
   border-style: solid;
   border-width: 2px;
   border-radius: 5px;
@@ -176,14 +178,12 @@ export default {
 
 .btn:hover {
   border-width: 4px;
-  padding-top: calc(0.5rem - 2px);
-  padding-bottom: calc(0.5rem - 2px);
+  padding: calc(0.5rem - 2px);
 }
 
 .btn:active {
   border-width: 1px;
-  padding-top: calc(0.5rem + 1px);
-  padding-bottom: calc(0.5rem + 1px);
+  padding: calc(0.5rem + 1px);
 }
 
 .m-1 {

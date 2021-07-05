@@ -37,6 +37,7 @@ export default {
     houseFields() {
       return [
         {name: 'Adres', type: 'text', houseProp: 'address'},
+        {name: 'Piętro', type: 'integer', houseProp: 'floorsNumber'},
         {name: 'Opis', type: 'text', houseProp: 'description'},
         {name: 'Data', width: 10, type: 'date', houseProp: 'createdAt'},
         {name: 'Etykieta', type: 'text', houseProp: 'label'},
@@ -54,7 +55,7 @@ export default {
   },
   methods: {
     cellContent(field) {
-      if (field.type === 'text') return this.house[field.houseProp]
+      if (field.type === 'text' || field.type === 'integer') return this.house[field.houseProp]
       if (field.type === 'date') return moment(this.house[field.houseProp]).local().format('YYYY.MM.DD hh:mm')
       // if (field.type === 'img') {
       //   return this.house[field.houseProp]
@@ -128,7 +129,7 @@ export default {
   color: #11B0F8;
   text-align: center;
   text-transform: uppercase;
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  padding: 0.5rem;
   border-style: solid;
   border-width: 2px;
   border-radius: 5px;
@@ -137,14 +138,12 @@ export default {
 
 .btn:hover {
   border-width: 4px;
-  padding-top: calc(0.5rem - 2px);
-  padding-bottom: calc(0.5rem - 2px);
+  padding: calc(0.5rem - 2px);
 }
 
 .btn:active {
   border-width: 1px;
-  padding-top: calc(0.5rem + 1px);
-  padding-bottom: calc(0.5rem + 1px);
+  padding: calc(0.5rem + 1px);
 }
 
 .m-1 {

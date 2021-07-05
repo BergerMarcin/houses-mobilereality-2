@@ -25,8 +25,10 @@ export default {
   data() {
     return {
       house: {
-        name: '',
         address: '',
+        floorsNumber: null,
+        description: '',
+        label: '',
         imgs: []
       }
     }
