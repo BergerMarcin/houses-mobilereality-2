@@ -35,13 +35,13 @@ Based on: https://stackoverflow.com/questions/143815/determine-if-an-html-elemen
 
 # Tasks time
 1. Styling part - start view (1. view): 3 (regular time) + 1 + 0.75 + 1 + 2 + 6 = 13.75 (included 2h on debugging rendering in Chrome)
-2. Logical part (views with API):
-   - a. List of houses view (2. view): 3 + 3h 
-   - b. Single house details view (3. view): 1 + 1h
-   - c. Delete house functionality (to the 2. & 3. view): 1 + 1h
-   - d. Add house view (4. view): 1 + 2 h
+2. Logical part (views with API) 18h (included 4h of writting, testing and improving general API action for Vuex):
+   - a. List of houses view (2. view): 3 + 3 = 6h 
+   - b. Single house details view (3. view): 1 + 1 + 1= 2h
+   - c. Delete house functionality (to the 2. & 3. view): 1 + 1 + 3 = 5h
+   - d. Add house view (4. view): 1 + 2 + 2 = 5h
 
-TOTAL: <br/> 
+TOTAL: 31.75h <br/> 
 Regular time: 3h
 
 <br/><hr/>
@@ -74,3 +74,6 @@ In case content was overflowed I switched content styling from `justify-content:
 Besides to get DOM elements I add unique ids for each Tile component instance and its elements. 
 
 BTW, once again Vue did the job with DOM operations (checking DOM params and manipulate VDOM of Vue is risky, but Vue is perfect & VDOM rules; I have never observed any Vue bug except mines :) - I created in Vue dynamic comics with quite complicated animations on element DOM)
+
+## Creating too general API action
+Preparing general API action method utilized quite a lot of hours but now I have quite nice, reused API action method for Vuex store

@@ -1,18 +1,22 @@
 <template>
-  <div class="flex justify-center">
+  <div class="flex justify-center my-2">
     <div class="flex flex-col w-80 my-2">
       <div class="header">Nowy dom</div>
 
       <div class="flex-col w-100 my-2">
-        <div v-for="(field, ind) in houseFields" :key="`house-field-${ind}`">
-          <label class="field-header">{{ field.name }}
-            <input class="field-content" :type="field.type" v-model="house[field.houseProp]"
-                   :placeholder="field.placeholder">
+        <div class="field-header" v-for="(field, ind) in houseFields" :key="`house-field-${ind}`">
+          <label class="inline-flex">{{ field.name }}
+            <textarea v-if="field.type === 'textarea'" class="field-content ml-3" :type="field.type" rows="4" cols="50"
+                      v-model="house[field.houseProp]" :placeholder="field.placeholder"/>
+            <input v-else class="field-content ml-3" :type="field.type" size="50"
+                   v-model="house[field.houseProp]" :placeholder="field.placeholder"/>
           </label>
         </div>
-        <div class="flex justify-center w-100 my-2">
-          <div class="btn m-1" :style="`disabled: ${!validatedData}`" @click="houseAdd()">Dodaj</div>
-          <div class="btn m-1" @click="housesList()">Cofnij (lista domów)</div>
+        <div class="flex justify-center">
+          <div class="btn mt-12 mb-6" :style="`disabled: ${!validatedData}`" @click="houseAdd()">Dodaj</div>
+        </div>
+        <div class="flex justify-center">
+          <div class="btn my-2" @click="housesListRoute()">Przejdź do listy domów</div>
         </div>
       </div>
     </div>
@@ -46,8 +50,11 @@ export default {
       ]
     },
     validatedData() {
-      console.log(typeof this.house.floorsNumber)
-      try {parseInt(this.house.floorsNumber)} catch {return false}
+      try {
+        this.houseFields.filter(hf => hf.type === 'number').forEach(hf => parseInt(this.house[hf]))
+      } catch {
+        return false
+      }
       return this.house.address.length > 5 && this.house.description.length > 10 && this.house.label.length > 1;
     }
   },
@@ -55,15 +62,14 @@ export default {
     async houseAdd() {
       if (this.validatedData) {
         const payload = {...this.house, floorsNumber: parseInt(this.house.floorsNumber)}
-        console.warn('House ADDING payload: ', payload);
-        // await this.$store.dispatch('addHouse', payload);
-        this.$toasted.success(`Dodano nowy dom o adresie ${this.$store.getters.addedHouse}`)
-        console.warn('House ADDED');
-        this.housesList();
-      } else this.$toasted.error('Błędne dane')
+        await this.$store.dispatch('addHouse', payload);
+        if (this.$store.getters.addedHouse.id) {
+          this.$toasted.success(`Dodano nowy dom o adresie ${this.$store.getters.addedHouse.address}`)
+          this.housesListRoute();
+        }
+      } else this.$toasted.error('Wprowadź poprawne dane domu')
     },
-    housesList() {
-      console.warn('Houses LIST');
+    housesListRoute() {
       this.$router.push({name: 'HousesList'});
     }
   }
@@ -91,6 +97,7 @@ export default {
   font-size: 1.5rem;
   font-weight: 600;
   color: #11B0F8;
+  margin-bottom: 1rem;
 }
 
 .field-content {
@@ -102,6 +109,10 @@ export default {
 
 .flex {
   display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
 }
 
 .flex-col {
@@ -144,8 +155,21 @@ export default {
   padding: calc(0.5rem + 1px);
 }
 
-.m-1 {
-  margin: 0.25rem;
+.mt-12 {
+  margin-top: 3rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ml-3 {
+  margin-left: 0.75rem;
 }
 
 </style>

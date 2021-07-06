@@ -80,8 +80,6 @@ export default {
         let curOverflow = elContent.style.overflow;
         if (!curOverflow || curOverflow === "visible") elContent.style.overflow = "hidden";
         let isOverflowing = el.clientWidth < elContent.scrollWidth - 2 || el.clientHeight < elContent.scrollHeight - 2;
-        // console.warn(elContent.clientWidth, elContent.clientHeight, elContent.scrollWidth, elContent.scrollHeight, isOverflowing)
-        // console.warn(el.clientWidth, el.clientHeight)
         elContent.style.overflow = curOverflow;
         this.tileContentOverflowed = isOverflowing;
       }

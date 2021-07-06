@@ -5,34 +5,40 @@ const ACTIONS_PARAMS = {
   getHouses: {
     url: 'houses/all/',
     method: 'GET',
-    mutation: 'setHouses'
+    response: {dataResult: 'yes', dataError: 'no', status: 200},
+    mutation: {name: 'setHouses', payload: 'dataResult'}
   },
   addHouse: {
     url: 'houses/',
     method: 'POST',
     requiredPayloadParams: ['address', 'floorsNumber', 'description', 'label'],
-    mutation: 'setAddedHouse'
+    response: {dataResult: 'yes', dataError: 'no', status: 201},
+    mutation: {name: 'setAddedHouse', payload: 'dataResult'}
   },
   getHouse: {
     url: 'houses/',
     method: 'GET',
     requiredQueryParams: ['id'],
-    mutation: 'setHouses'
+    response: {dataResult: 'yes', dataError: 'no', status: 200},
+    mutation: {name: 'setHouses', payload: 'dataResult'}
   },
   deleteHouse: {
     url: 'houses/',
     method: 'DELETE',
     requiredQueryParams: ['id'],
-    mutation: 'deleteHouseFromHouses'
+    response: {status: 204},
+    mutation: {name: 'deleteHouseFromHouses', payload: 'params', params: ['id']}
   },
 };
 
 const _idToid = (houses) => {
-  return houses.map(h => {
+  const house_idToid = (h) => {
     const hm = {...h, id: h._id};
     delete hm._id;
-    return hm
-  });
+    return hm;
+  }
+  if (Array.isArray(houses)) return houses.map(h => house_idToid(h));
+  return house_idToid(houses);
 }
 
 const paramsValidation = (actionName, params, checkingScope) => {
@@ -59,8 +65,7 @@ const paramsValidation = (actionName, params, checkingScope) => {
  * @param params          - should includes both `requiredQueryParams` and `requiredPayloadParams`
  * @returns {Promise<void>}
  */
-const action = async (actionName, {commit}, params = {}) => {
-  console.warn('STORE. actionName: ', actionName);
+const apiAction = async (actionName, {commit}, params = {}) => {
   // params validation if it has both required params of request: queries & payload/body
   if (!paramsValidation(actionName, params, 'requiredQueryParams')
     || !paramsValidation(actionName, params, 'requiredPayloadParams')) return;
@@ -69,13 +74,12 @@ const action = async (actionName, {commit}, params = {}) => {
   let urlWithQuery = ACTIONS_PARAMS[actionName].url
   if (ACTIONS_PARAMS[actionName].requiredQueryParams && ACTIONS_PARAMS[actionName].requiredQueryParams.length > 0)
     urlWithQuery += ACTIONS_PARAMS[actionName].requiredQueryParams
-      .reduce((prev, reqParam) => prev + reqParam + '/', '');
+      .reduce((prev, reqParam) => prev + params[reqParam] + '/', '');
 
   // request payload
   let payload = {};
   if (ACTIONS_PARAMS[actionName].requiredPayloadParams)
-    Object.keys(ACTIONS_PARAMS[actionName].requiredPayloadParams)
-      .forEach(reqParam => payload = {...payload, reqParam: params[reqParam]})
+    ACTIONS_PARAMS[actionName].requiredPayloadParams.forEach(reqParam => payload[reqParam] = params[reqParam])
 
   // request (core functionality)
   await axios.simple(
@@ -83,35 +87,50 @@ const action = async (actionName, {commit}, params = {}) => {
     urlWithQuery,
     payload
   )
-    .then(async (data) => {
-      console.warn(`OK @ STORE. actionName: ${ACTIONS_PARAMS[actionName].url}`);
-      console.warn('  resolved data: ', data);
-      if (ACTIONS_PARAMS[actionName].mutation) {
-        commit(ACTIONS_PARAMS[actionName].mutation, _idToid(data.results));
+    .then(async (resp) => {
+      console.log(`OK @ STORE. actionName: ${ACTIONS_PARAMS[actionName].url}`);
+      console.log('  response: ', resp);
+      // response validation
+      if ((!ACTIONS_PARAMS[actionName].response.status || (ACTIONS_PARAMS[actionName].response.status && ACTIONS_PARAMS[actionName].response.status === resp.status))
+        && (!ACTIONS_PARAMS[actionName].response.dataResult || (ACTIONS_PARAMS[actionName].response.dataResult === 'yes' && (resp.data.result || resp.data.results)))
+        && (!ACTIONS_PARAMS[actionName].response.dataError || (ACTIONS_PARAMS[actionName].response.dataError === 'no' && (resp.data.error === false || resp.data.error === false))))
+      {
+        // mutation commit
+        if (ACTIONS_PARAMS[actionName].mutation) {
+          let mutationPayload = {};
+          if (ACTIONS_PARAMS[actionName].mutation.payload === 'dataResult')
+            mutationPayload = _idToid(resp.data.result || resp.data.results)
+          if (ACTIONS_PARAMS[actionName].mutation.payload === 'params')
+            ACTIONS_PARAMS[actionName].mutation.params.forEach(mp => mutationPayload[mp] = params[mp])
+          commit(ACTIONS_PARAMS[actionName].mutation.name, mutationPayload);
+        }
+      } else {
+        throw new Error('Response not validated')
       }
     })
     .catch(error => {
       console.error(`Error @ STORE. actionName: ${ACTIONS_PARAMS[actionName].url}`);
       console.error('  error message: ', error);
-      Vue.toasted.error('Wystąpił problem z pobraniem danych. Spróbuj ponownie za chwilę lub skontaktuj się z administratorem');
+      Vue.toasted.error('Wystąpił problem z wykonaniem zadania. Spróbuj ponownie za chwilę lub skontaktuj się z administratorem');
     })
 }
 
 const getHouses = async ({commit}) => {
-  await action('getHouses', {commit});
+  await apiAction('getHouses', {commit});
 }
 
 const getHouse = async ({commit}, params) => {
-  await action('getHouses', {commit}, params);
+  await apiAction('getHouse', {commit}, params);
 }
 
 const addHouse = async ({commit}, params) => {
   commit('resetAddedHouse');
-  await action('addHouse', {commit}, params);
+  await apiAction('addHouse', {commit}, params);
 }
 
 const deleteHouse = async ({commit}, params) => {
-  await action('deleteHouses', {commit}, params);
+  commit('resetDeletedHouse');
+  await apiAction('deleteHouse', {commit}, params);
 }
 
 

@@ -1,8 +1,5 @@
 import axios from 'axios'
 import Vue from 'vue'
-// import store from '../store'
-// import ErrorDialog from '../views/dialogs/ErrorDialog'
-// import { EventBus } from '../helpers/eventBus'
 
 const api = axios.create(
   {
@@ -14,7 +11,7 @@ const api = axios.create(
 );
 
 api.interceptors.request.use((config) => {
-  config.headers.common = {...config.headers.common}    // for the future: , ...store.getters.authHeader
+  config.headers.common = {...config.headers.common}    // for the future with JWT: , ...store.getters.authHeader
   return config;
 });
 
@@ -23,13 +20,11 @@ api.simple = async function (method, resource, data = {}, callback = () => true)
     let response;
     let error;
     this({url: resource, method, data})
-      .then(({data}) => {
-        response = data;
-        console.warn(response);
+      .then((resp) => {
+        response = resp;
       })
       .catch((err) => {
         error = err;
-        console.warn(response);
       })
       .finally(async () => {
         await callback(error, response);

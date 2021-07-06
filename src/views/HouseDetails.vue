@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center">
+  <div class="flex justify-center my-2">
     <div class="flex flex-col w-80 my-2">
       <div class="header">Szczegóły domu {{ house.name }}</div>
 
@@ -8,9 +8,11 @@
           <div class="field-header">{{ field.name }}</div>
           <div class="field-content" v-html="cellContent(field)"/>
         </div>
-        <div class="flex justify-center w-100 my-2">
-          <div class="btn m-1" @click="housesList()">Lista domów</div>
-          <div class="btn m-1" @click="houseDelete(house.id, house.address)">Usuń</div>
+        <div class="flex justify-center">
+          <div class="btn mt-12 mb-6" @click="houseDelete(house.id, house.address)">Usuń dom</div>
+        </div>
+        <div class="flex justify-center">
+          <div class="btn my-2" @click="housesListRoute()">Przejdź do listy domów</div>
         </div>
       </div>
     </div>
@@ -45,21 +47,17 @@ export default {
     }
   },
   async mounted() {
-    console.warn('HouseDetails component START. house id (prop): ', this.id);
-    console.warn('HouseDetails this.$store.getters.houses: ', this.$store.getters.houses);
     if (this.$store.getters.houses.length < 1) await this.$store.dispatch('getHouses')
     this.house = this.$store.getters.house(this.id);
-    console.warn('HouseDetails this.house: ', this.house);
     if (!this.house) this.$toasted.error('Nie znaleziono domu')
   },
   methods: {
     cellContent(field) {
       if (field.type === 'text' || field.type === 'integer') return this.house[field.houseProp]
-      if (field.type === 'date') return moment(this.house[field.houseProp]).local().format('YYYY.MM.DD hh:mm')
-      return '-'
+      if (field.type === 'date') return moment(this.house[field.houseProp]).local().format('YYYY.MM.DD HH:MM')
+      return '-';
     },
-    housesList() {
-      console.log('Houses LIST');
+    housesListRoute() {
       this.$router.push({name: 'HousesList'});
     }
   }
@@ -141,8 +139,17 @@ export default {
   padding: calc(0.5rem + 1px);
 }
 
-.m-1 {
-  margin: 0.25rem;
+.mt-12 {
+  margin-top: 3rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 </style>
