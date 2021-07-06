@@ -1,15 +1,15 @@
 <template>
   <div class="flex justify-center my-2">
-    <div class="flex flex-col w-80 my-2">
-      <div class="header">Nowy dom</div>
+    <div class="flex flex-col w-4/5 my-2">
+      <div class="view-header">Nowy dom</div>
 
       <div class="flex-col w-100 my-2">
-        <div class="field-header" v-for="(field, ind) in houseFields" :key="`house-field-${ind}`">
+        <div class="field-header mb-4" v-for="(field, ind) in houseFields" :key="`house-field-${ind}`">
           <label class="inline-flex">{{ field.name }}
-            <textarea v-if="field.type === 'textarea'" class="field-content ml-3" :type="field.type" rows="4" cols="50"
-                      v-model="house[field.houseProp]" :placeholder="field.placeholder"/>
-            <input v-else class="field-content ml-3" :type="field.type" size="50"
-                   v-model="house[field.houseProp]" :placeholder="field.placeholder"/>
+            <textarea v-if="field.type === 'textarea'" class="field-content text-input border-input ml-3" :type="field.type"
+                      rows="4" cols="50" v-model="house[field.houseProp]" :placeholder="field.placeholder"/>
+            <input v-else class="field-content text-input border-input ml-3" :type="field.type"
+                   size="50" v-model="house[field.houseProp]" :placeholder="field.placeholder"/>
           </label>
         </div>
         <div class="flex justify-center">
@@ -77,99 +77,15 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  font-size: 2rem;
-  font-weight: 800;
-  font-family: sans-serif;
-  letter-spacing: -0.05em;
-  color: #11B0F8;
-  margin: 1rem;
+.text-input {
+  font-size: 1.15rem;
+  color: theme('colors.input');
 }
 
-.field {
-  font-family: sans-serif;
-  text-align: center;
-  letter-spacing: -0.05em;
-}
-
-.field-header {
-  @extend .field;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #11B0F8;
-  margin-bottom: 1rem;
-}
-
-.field-content {
-  @extend .field;
-  font-size: 1rem;
-  font-weight: 400;
-  color: #A9B1BD;
-}
-
-.flex {
-  display: flex;
-}
-
-.inline-flex {
-  display: inline-flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.w-80 {
-  width: 80%;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.btn {
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 800;
-  color: #11B0F8;
-  text-align: center;
-  text-transform: uppercase;
-  padding: 0.5rem;
-  border-style: solid;
+.border-input{
   border-width: 2px;
-  border-radius: 5px;
-  border-color: #11B0F8;
-}
-
-.btn:hover {
-  border-width: 4px;
-  padding: calc(0.5rem - 2px);
-}
-
-.btn:active {
-  border-width: 1px;
-  padding: calc(0.5rem + 1px);
-}
-
-.mt-12 {
-  margin-top: 3rem;
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem;
-}
-
-.my-2 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.ml-3 {
-  margin-left: 0.75rem;
+  border-radius: 4px;
+  border-color: theme('colors.input');
 }
 
 </style>

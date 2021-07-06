@@ -1,4 +1,5 @@
 <template>
+  <div class="flex justify-center m-4">
   <div class="flex flex-col">
     <div class="flex">
       <Tile tileId="00" :childDepth=1 :content="startPageContent[0][0]"/>
@@ -17,6 +18,7 @@
       <Tile :childDepth=1 tileId="20" :content="startPageContent[2][0]"/>
       <Tile :childDepth=1 tileId="30" :content="startPageContent[3][0]"/>
     </div>
+  </div>
   </div>
 </template>
 
@@ -76,12 +78,5 @@ export default {
 </script>
 
 
-<style scoped lang="scss">
-.flex {
-  display: flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
+<style scoped>
 </style>

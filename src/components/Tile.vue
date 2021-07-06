@@ -1,13 +1,13 @@
 <template>
   <div :id="`tile-${tileId}`" :style="`${tileSize}`">
-    <div class="tile" :style="content.urlBackground && `background: url(${content.urlBackground}) no-repeat; background-size: 100%;`">
+    <div class="flex w-full h-full" :style="content.urlBackground && `background: url(${content.urlBackground}) no-repeat; background-size: 100%;`">
     <div :id="`tile-${tileId}-content`" class="tile-content" :style="tileContentOverflowed && `justify-content: start;`">
       <h1 v-if="content.header" class="text-center uppercase mt-2">{{ content.header }}</h1>
       <h4 v-if="content.subHeader" class="text-theme-primary text-center uppercase mb-8">{{ content.subHeader }}</h4>
       <h3 v-for="(line, index) in content.headerDescriptions" :key="`hD-${index}`" class="text-center mb-4">{{ line }}</h3>
       <h5 v-for="(line, index) in content.highlightedTexts" :key="`hT-${index}`" class="text-center mb-4">{{ line }}</h5>
       <p v-for="(line, index) in content.regularTexts" :key="`rT-${index}`" class="text-center mb-2">{{ line }}</p>
-      <div v-if="content.btn" @click="clickHandler" class="btn">{{ content.btn.text }}</div>
+      <div v-if="content.btn" @click="clickHandler" class="btn-tile mt-12 mb-8">{{ content.btn.text }}</div>
     </div>
   </div>
   </div>
@@ -52,7 +52,7 @@ export default {
       this.$router.push({name: this.content.btn.routeName});
     },
     setTileSize() {
-      const BASIC_PADDING_IN_PX = 16;
+      const BASIC_PADDING_IN_PX = 20;
       const vw = window.innerWidth;   // in pixels
       const vh = window.innerHeight;  // in pixels
       const maxWidth = Math.round(0.5 * vw - BASIC_PADDING_IN_PX)     // `calc(${percentSize}vw - ${padding}rem)`;
@@ -90,14 +90,6 @@ export default {
 
 
 <style scoped>
-.tile {
-  display: flex;
-  //border-style: solid;
-  //border-width: 2px;
-  width: 100%;
-  height: 100%;
-}
-
 .tile-content {
   display: flex;
   flex-direction: column;
@@ -107,16 +99,9 @@ export default {
   padding-left: 2rem;
   padding-right: 2rem;
   overflow: auto;
-  font-family: sans-serif;
   letter-spacing: -0.1em;
   width: 100%;
   height: 100%;
-}
-
-h1, h3, h4, h5, p {
-  margin-block-start: 0;
-  margin-block-end: 0;
-  margin-inline: 0;
 }
 
 p {
@@ -124,57 +109,4 @@ p {
   color: #A9B1BD;
 }
 
-.btn {
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 800;
-  color: #11B0F8;
-  text-align: center;
-  text-transform: uppercase;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
-  padding: 0.5rem 2rem 0.5rem 2rem;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 5px;
-  border-color: #11B0F8;
-}
-
-.btn:hover {
-  border-width: 4px;
-  margin-top: calc(3rem - 4px);
-}
-
-.btn:active {
-  border-width: 1px;
-  margin-top: calc(3rem + 2px);
-}
-
-.uppercase {
-  text-transform: uppercase;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-theme-primary {
-  color: #11B0F8;
-}
-
-.mb-2 {
-  margin-bottom: 0.5rem;
-}
-
-.mb-4 {
-  margin-bottom: 1rem;
-}
-
-.mb-8 {
-  margin-bottom: 2rem;
-}
-
-.mt-2 {
-  margin-top: 1rem;
-}
 </style>

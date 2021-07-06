@@ -1,12 +1,12 @@
 <template>
   <div class="flex justify-center my-2">
-    <div class="flex flex-col w-80 my-2">
-      <div class="header">Szczegóły domu {{ house.name }}</div>
+    <div class="flex flex-col w-4/5 my-2">
+      <div class="view-header">Szczegóły domu {{ house.name }}</div>
 
       <div class="flex-col w-100 my-2">
         <div v-for="(field, ind) in houseFields" :key="`house-field-${ind}`">
-          <div class="field-header">{{ field.name }}</div>
-          <div class="field-content" v-html="cellContent(field)"/>
+          <div class="field-header mb-2">{{ field.name }}</div>
+          <div class="field-content mb-4" v-html="cellContent(field)"/>
         </div>
         <div class="flex justify-center">
           <div class="btn mt-12 mb-6" @click="houseDelete(house.id, house.address)">Usuń dom</div>
@@ -65,91 +65,5 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  font-size: 2rem;
-  font-weight: 800;
-  font-family: sans-serif;
-  letter-spacing: -0.05em;
-  color: #11B0F8;
-  margin: 1rem;
-}
-
-.field {
-  font-family: sans-serif;
-  letter-spacing: -0.05em;
-}
-
-.field-header {
-  @extend .field;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #11B0F8;
-  margin-bottom: 0.5rem;
-}
-
-.field-content {
-  @extend .field;
-  font-size: 1rem;
-  font-weight: 400;
-  color: #A9B1BD;
-  margin-bottom: 1rem;
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.w-80 {
-  width: 80%;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.btn {
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 800;
-  color: #11B0F8;
-  text-align: center;
-  text-transform: uppercase;
-  padding: 0.5rem;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 5px;
-  border-color: #11B0F8;
-}
-
-.btn:hover {
-  border-width: 4px;
-  padding: calc(0.5rem - 2px);
-}
-
-.btn:active {
-  border-width: 1px;
-  padding: calc(0.5rem + 1px);
-}
-
-.mt-12 {
-  margin-top: 3rem;
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem;
-}
-
-.my-2 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
 
 </style>

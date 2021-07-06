@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center field">
-      <div class="header mr-16">Lista domów</div>
+      <div class="view-header mr-16">Lista domów</div>
       <div class="btn" @click="houseAddRoute()">Dodaj nowy dom</div>
     </div>
 
@@ -85,111 +85,17 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  font-size: 2rem;
-  font-weight: 800;
-  font-family: sans-serif;
-  letter-spacing: -0.05em;
-  color: #11B0F8;
-  margin: 1rem;
-}
-
-.field {
-  font-family: sans-serif;
-  text-align: center;
-  letter-spacing: -0.05em;
-}
-
-.field-header {
-  @extend .field;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #11B0F8;
-}
-
-.field-content {
-  @extend .field;
-  font-size: 1rem;
-  font-weight: 400;
-  color: #A9B1BD;
-}
-
-.flex {
-  display: flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.flex-wrap {
-  flex-wrap: wrap;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.self-center {
-  align-self: center;
-}
-
-.w-100 {
-  width: 100%;
-}
-
 .active-cel {
   cursor: pointer;
 }
 
 .active-cel:hover {
   font-weight: 800;
-  color: #11B0F8;
+  color: theme('colors.primary');
 }
 
 .active-cel:active {
   font-weight: 400;
-}
-
-.btn {
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 800;
-  color: #11B0F8;
-  text-align: center;
-  text-transform: uppercase;
-  padding: 0.5rem;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 5px;
-  border-color: #11B0F8;
-}
-
-.btn:hover {
-  border-width: 4px;
-  padding: calc(0.5rem - 2px);
-}
-
-.btn:active {
-  border-width: 1px;
-  padding: calc(0.5rem + 1px);
-}
-
-.m-1 {
-  margin: 0.25rem;
-}
-
-.my-2 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.mr-16 {
-  margin-right: 4rem;
 }
 
 </style>

@@ -41,7 +41,7 @@ Based on: https://stackoverflow.com/questions/143815/determine-if-an-html-elemen
    - c. Delete house functionality (to the 2. & 3. view): 1 + 1 + 3 = 5h
    - d. Add house view (4. view): 1 + 2 + 2 = 5h
 
-TOTAL: 31.75h <br/> 
+TOTAL: 31.75h (+1.5h fixing issue with TailwindCSS and refactor styles)<br/> 
 Regular time: 3h
 
 <br/><hr/>

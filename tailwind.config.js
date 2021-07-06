@@ -9,7 +9,8 @@ module.exports = {
     colors: {
       background: '#FFFFFF',
       primary: '#11B0F8',
-      secondary: '#A9B1BD'
+      secondary: '#A9B1BD',
+      input: '#000000'
     },
     fontFamily: {
       default: ['Roboto']
