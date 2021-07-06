@@ -41,7 +41,7 @@ Based on: https://stackoverflow.com/questions/143815/determine-if-an-html-elemen
    - c. Delete house functionality (to the 2. & 3. view): 1 + 1 + 3 = 5h
    - d. Add house view (4. view): 1 + 2 + 2 = 5h
 
-TOTAL: 31.75h (+1.5h fixing issue with TailwindCSS and refactor styles)<br/> 
+TOTAL: 31.75h (+1.5h fixing issue with TailwindCSS and refactor styles + 0.5h fixing flag overflowed & improving RWD for mobiles)<br/> 
 Regular time: 3h
 
 <br/><hr/>
@@ -77,3 +77,10 @@ BTW, once again Vue did the job with DOM operations (checking DOM params and man
 
 ## Creating too general API action
 Preparing general API action method utilized quite a lot of hours but now I have quite nice, reused API action method for Vuex store
+
+## Checking if content is overflowed at mounted
+At mounted check/flag `isOverflowing` @ `Tile.vue` is set wrongly because property values `elContent.scrollWidth` and `elContent.scrollHeight` are wrong (as if each tile has full screen width). 
+After all tiles viewed these property values are correct and so on flag `isOverflowing` is correct.<br/>
+My observation conclusion was that DOM probably needs more time to set its content - I mean need more time to localize all tiles properly and then property values `elContent.scrollWidth` and `elContent.scrollHeight` would be OK, so on flag `isOverflowing` would be correct.<br/>.
+So the only one solution might be awaiting some time with calling checking isOverflowing. At such cases the best Vue solution is `this.$nextTick` function.
+It occured that 2 `this.$nextTick` was required at/after mounted to set flag `isOverflowing` properly 

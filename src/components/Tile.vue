@@ -39,17 +39,21 @@ export default {
     }
   },
   mounted () {
-    window.addEventListener('resize', () => {
-      this.setTileContentOverflowed();
-      this.setTileSize();
+    window.addEventListener('resize', this.updateSize);
+    window.addEventListener('orientationchange', this.updateSize);
+    this.$nextTick(() => {
+      this.updateSize();
+      this.$nextTick(() => this.updateSize());
     });
-    this.setTileSize();
-    this.setTileContentOverflowed();
   },
   methods: {
     clickHandler() {
       console.log(`CLICKED: `, this.content.btn);
       this.$router.push({name: this.content.btn.routeName});
+    },
+    updateSize() {
+      this.setTileSize();
+      this.setTileContentOverflowed()
     },
     setTileSize() {
       const BASIC_PADDING_IN_PX = 20;
